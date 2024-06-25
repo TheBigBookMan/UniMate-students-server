@@ -1,3 +1,5 @@
+using UniMate_students_server.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace UniMate_students_server
 {
@@ -6,6 +8,10 @@ namespace UniMate_students_server
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            // Add DB Connection
+            builder.Services.AddDbContext<CentralDbContext>(options =>
+                options.UseNpgsql(builder.Configuration.GetConnectionString("CentralDatabase")));
 
             // Add services to the container.
 
