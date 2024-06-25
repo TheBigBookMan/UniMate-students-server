@@ -1,0 +1,13 @@
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vscode/
+bin/
+obj/
+*.pdb
+*.cache
+*.log
+*.tmp
+*.ide/
+*.vs/
