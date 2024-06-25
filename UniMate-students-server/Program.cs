@@ -1,5 +1,5 @@
-using UniMate_students_server.Models;
 using Microsoft.EntityFrameworkCore;
+using UniMate_students_server.Contexts;
 
 namespace UniMate_students_server
 {
