@@ -24,6 +24,7 @@ namespace UniMate_students_server.Middlewares
                 using (var scope = context.RequestServices.CreateScope())
                 {
                     var centralDbContext = scope.ServiceProvider.GetRequiredService<CentralDbContext>();
+
                     var dbContextFactory = scope.ServiceProvider.GetRequiredService<DynamicDbContextFactory>();
 
                     var university = await centralDbContext.Universities
