@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UniMate_students_server.Models
 {
@@ -10,10 +11,11 @@ namespace UniMate_students_server.Models
 
         public string UniversityName { get; set; }
 
-        public string DatabaseHash { get; }
+        public string? DatabaseHash { get; set; }
 
-        public DateTime CreatedAt { get; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public string CreatedAt { get; } = DateTime.UtcNow.ToString("o");
 
-        public string db_id { get; }
+        public string db_id { get; set; }
     }
 }

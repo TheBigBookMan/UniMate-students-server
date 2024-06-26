@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using UniMate_students_server.Contexts;
+using UniMate_students_server.Factories;
+using UniMate_students_server.Middlewares;
 
 namespace UniMate_students_server
 {
@@ -9,14 +11,13 @@ namespace UniMate_students_server
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add DB Connection
+            // Add services to the container.
             builder.Services.AddDbContext<CentralDbContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("CentralDatabase")));
 
-            // Add services to the container.
-
+            builder.Services.AddScoped<DynamicDbContextFactory>();
+            builder.Services.AddHttpContextAccessor();
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
@@ -30,12 +31,10 @@ namespace UniMate_students_server
             }
 
             app.UseHttpsRedirection();
-
             app.UseAuthorization();
-
+            app.UseMiddleware<DynamicDatabaseMiddleware>();
 
             app.MapControllers();
-
             app.Run();
         }
     }

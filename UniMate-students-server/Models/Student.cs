@@ -13,7 +13,7 @@ namespace UniMate_students_server.Models
         public string uniemail { get; set; }
         public string unistudentid { get; }
         public string email { get; set; }
-        public DateOnly dob { get; set; }
+        public string dob { get; set; }
         public DateTime createdat { get; set; }
     }
 }
