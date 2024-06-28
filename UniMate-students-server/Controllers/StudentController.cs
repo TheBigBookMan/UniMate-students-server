@@ -18,9 +18,9 @@ namespace UniMate_students_server.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        private StudentContext GetDynamicDbContext()
+        private UniversityContext GetDynamicDbContext()
         {
-            return _httpContextAccessor.HttpContext.Items["DynamicDbContext"] as StudentContext;
+            return _httpContextAccessor.HttpContext.Items["DynamicDbContext"] as UniversityContext;
         }
 
         [HttpGet]
@@ -49,6 +49,7 @@ namespace UniMate_students_server.Controllers
 
             dbContext.Students.Add(student);
             await dbContext.SaveChangesAsync();
+
             return Ok(student);
         }
     }

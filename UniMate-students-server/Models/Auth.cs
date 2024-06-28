@@ -14,7 +14,7 @@ namespace UniMate_students_server.Models
         [Column("studentid")]
         public int StudentId { get; set; }
 
-        [ForeignKey("studentid")]
+        [ForeignKey("StudentId")]
         public Student Student { get; set; }
 
         [Column("passwordhash")]

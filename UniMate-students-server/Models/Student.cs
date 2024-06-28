@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
 namespace UniMate_students_server.Models
 {
@@ -34,5 +35,7 @@ namespace UniMate_students_server.Models
         [Column("createdat")]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedAt { get; set; }
+
+        public ICollection<Auth> Auths { get; set; } = new List<Auth>();
     }
 }
