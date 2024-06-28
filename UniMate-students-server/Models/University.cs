@@ -7,7 +7,7 @@ namespace UniMate_students_server.Models
     public class University
     {
         [Key]
-        public int UniversityId { get; }
+        public int UniversityId { get; set;  }
 
         public string UniversityName { get; set; }
 

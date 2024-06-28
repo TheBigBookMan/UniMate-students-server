@@ -45,6 +45,8 @@ namespace UniMate_students_server.Controllers
                 return BadRequest("Database context not found.");
             }
 
+            student.Dob = DateTime.SpecifyKind(student.Dob, DateTimeKind.Utc);
+
             dbContext.Students.Add(student);
             await dbContext.SaveChangesAsync();
             return Ok(student);
