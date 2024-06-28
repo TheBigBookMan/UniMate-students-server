@@ -53,12 +53,31 @@ namespace UniMate_students_server.Controllers
             try
             {
                 var result = await dbContext.SaveChangesAsync();
+
                 if(result > 0)
                 {
+                    string password = PasswordHelper.GeneratePassword(student.FirstName, student.LastName);
+
                     var auth = new Auth
                     {
                         StudentId = student.StudentId,
-                        PasswordHash = CreatePassword()
+                        PasswordHash = PasswordHelper.CreatePasswordHash(password, out string salt),
+                        PasswordSalt = salt,
+                        CreatedAt = DateTime.UtcNow
+                    };
+
+                    dbContext.Auths.Add(auth);
+
+                    var authResult = await dbContext.SaveChangesAsync();
+                    if(authResult > 0)
+                    {
+                        return CreatedAtAction(nameof(GetStudentById), new { id = student.StudentId }, student);
+                    } else
+                    {
+                        // If the Auth creation fails, rollback the Student creation
+                        dbContext.Students.Remove(student);
+                        await dbContext.SaveChangesAsync();
+                        return StatusCode(StatusCodes.Status500InternalServerError, "Error creating authentication record.");
                     }
 
                 } else
@@ -71,11 +90,6 @@ namespace UniMate_students_server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating student: {ex.Message}");
             }
 
-            // TODO this will create an entry but a temporaryu password
-
-
-
-            return Ok(student);
         }
     }
 }
