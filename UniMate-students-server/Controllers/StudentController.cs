@@ -50,6 +50,8 @@ namespace UniMate_students_server.Controllers
             dbContext.Students.Add(student);
             await dbContext.SaveChangesAsync();
 
+            // TODO this will need to also set the password hash to some sort of defaul or something
+
             return Ok(student);
         }
     }

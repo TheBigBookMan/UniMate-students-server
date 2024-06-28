@@ -24,6 +24,11 @@ namespace UniMate_students_server.Controllers
             return _httpContextAccessor.HttpContext.Items["DynamicDbContext"] as UniversityContext;
         }
 
+        // TODO add in a signup endpoint and this can set the password hash
+        // TODO this will need to work in unison with frontend where a new user being added has a password hash of their uni name plus username or something and then 
+
+        // TODO create a reset password path
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
