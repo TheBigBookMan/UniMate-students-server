@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using UniMate_students_server.Models;
+using UniMate_students_server.Helpers;
 
 namespace UniMate_students_server.Controllers
 {
@@ -48,9 +49,31 @@ namespace UniMate_students_server.Controllers
             student.Dob = DateTime.SpecifyKind(student.Dob, DateTimeKind.Utc);
 
             dbContext.Students.Add(student);
-            await dbContext.SaveChangesAsync();
 
-            // TODO this will need to also set the password hash to some sort of defaul or something
+            try
+            {
+                var result = await dbContext.SaveChangesAsync();
+                if(result > 0)
+                {
+                    var auth = new Auth
+                    {
+                        StudentId = student.StudentId,
+                        PasswordHash = CreatePassword()
+                    }
+
+                } else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error creating Student");
+                }
+
+            } catch (Exception ex) 
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating student: {ex.Message}");
+            }
+
+            // TODO this will create an entry but a temporaryu password
+
+
 
             return Ok(student);
         }

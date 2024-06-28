@@ -5,6 +5,7 @@ using UniMate_students_server.Models;
 using Microsoft.AspNetCore.Identity.Data;
 using System.Text;
 using System.Security.Cryptography;
+using UniMate_students_server.Helpers;
 
 namespace UniMate_students_server.Controllers
 {
@@ -26,6 +27,7 @@ namespace UniMate_students_server.Controllers
 
         // TODO add in a signup endpoint and this can set the password hash
         // TODO this will need to work in unison with frontend where a new user being added has a password hash of their uni name plus username or something and then 
+        // if the password hash is empty then return for set new password
 
         // TODO create a reset password path
 
@@ -45,21 +47,12 @@ namespace UniMate_students_server.Controllers
                 return Unauthorized("Inavlid credentials");
             }
 
-            if(!VerifyPasswordHash(request.Password, authRecord.PasswordHash, authRecord.PasswordSalt))
+            if(!PasswordHelper.VerifyPasswordHash(request.Password, authRecord.PasswordHash, authRecord.PasswordSalt))
             {
                 return Unauthorized("Invalid credentials");
             }
 
             return Ok("Login successful.");
-        }
-
-        private bool VerifyPasswordHash(string password, string storedHash, string storedSalt)
-        {
-            using (var hmac = new HMACSHA512(Encoding.UTF8.GetBytes(storedSalt)))
-            {
-                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-                return storedHash == Convert.ToBase64String(computedHash);
-            }
         }
 
         public class LoginRequest
