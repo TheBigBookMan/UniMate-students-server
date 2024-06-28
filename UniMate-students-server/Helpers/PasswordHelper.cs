@@ -1,6 +1,7 @@
 ﻿using System.Net.NetworkInformation;
 using System.Security.Cryptography;
 using System.Text;
+using System;
 
 namespace UniMate_students_server.Helpers
 {
@@ -23,6 +24,13 @@ namespace UniMate_students_server.Helpers
                 var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
                 return storedHash == Convert.ToBase64String(computedHash);
             }
+        }
+
+        public static string GeneratePassword(string firstName, string lastName)
+        {
+            string password = (firstName.Length >= 3 ? firstName.Substring(0, 3) : firstName + GetRandomChars(3 - firstName.Length)) +
+                              (lastName.Length >= 3 ? lastName.Substring(0, 3) : lastName + GetRandomChars(3 - lastName.Length));
+            return password;
         }
     }
 }
