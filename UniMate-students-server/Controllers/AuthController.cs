@@ -105,7 +105,14 @@ namespace UniMate_students_server.Controllers
                 return Unauthorized("Invalid credentials");
             }
 
-            
+            var loginSuccessResponse = new LoginResponse
+            {
+                StudentId = student.StudentId,
+                ResponseMessage = "login success",
+                UniEmail = student.UniEmail,
+                UniStudentId = student.UniStudentId
+            };
+            return Ok(loginSuccessResponse);
         }
 
         public class LoginRequest
