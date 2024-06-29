@@ -75,8 +75,14 @@ namespace UniMate_students_server.Controllers
             {
                 return BadRequest("Database context not found.");
             }
-            
-            var authRecord = await dbContext.Auth.FirstOrDefaultAsync(a => a.StudentId == request.studentId);
+
+            var student = await dbContext.Students.FirstOrDefaultAsync(s => s.Username == request.username);
+            if(student == null)
+            {
+                return NotFound();
+            }
+
+            var authRecord = await dbContext.Auth.FirstOrDefaultAsync(a => a.StudentId == student.StudentId);
 
             if (authRecord == null)
             {
@@ -93,7 +99,7 @@ namespace UniMate_students_server.Controllers
 
         public class LoginRequest
         {
-            public int studentId { get; set; }
+            public string username { get; set; }
             public string password { get; set; }
         }
     }
