@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity.Data;
 using System.Text;
 using System.Security.Cryptography;
 using UniMate_students_server.Helpers;
+using UniMate_students_server.DTOs.AuthDTO;
 
 namespace UniMate_students_server.Controllers
 {
@@ -91,7 +92,12 @@ namespace UniMate_students_server.Controllers
 
             if(string.IsNullOrEmpty(authRecord.PasswordHash))
             {
-                return Ok("Reset password");
+                var resetPasswordResponse = new BaseResponse
+                {
+                    StudentId = student.StudentId,
+                    ResponseMessage = "reset password"
+                };
+                return Ok(resetPasswordResponse);
             }
 
             if(!PasswordHelper.VerifyPasswordHash(request.password, authRecord.PasswordHash, authRecord.PasswordSalt))
@@ -99,7 +105,7 @@ namespace UniMate_students_server.Controllers
                 return Unauthorized("Invalid credentials");
             }
 
-            return Ok("Login successful.");
+            
         }
 
         public class LoginRequest
