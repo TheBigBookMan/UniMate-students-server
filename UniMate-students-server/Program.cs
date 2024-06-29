@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using UniMate_students_server.Contexts;
 using UniMate_students_server.Factories;
 using UniMate_students_server.Middlewares;
+using Microsoft.AspNetCore.Mvc;
 
 namespace UniMate_students_server
 {
@@ -21,6 +22,16 @@ namespace UniMate_students_server
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    policy => policy
+                    .WithOrigins("http://localhost:5173")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials());
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -31,6 +42,8 @@ namespace UniMate_students_server
             }
 
             app.UseHttpsRedirection();
+            app.UseCors("AllowSpecificOrigin");
+
             app.UseAuthorization();
             app.UseMiddleware<DynamicDatabaseMiddleware>();
 
