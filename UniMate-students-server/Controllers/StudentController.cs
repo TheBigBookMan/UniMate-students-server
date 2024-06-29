@@ -57,8 +57,8 @@ namespace UniMate_students_server.Controllers
                 if(result > 0)
                 {
                     string password = PasswordHelper.GeneratePassword(student.FirstName, student.LastName);
-                    Console.WriteLine(password);
                     var auth = new Auth
+
                     {
                         StudentId = student.StudentId,
                         PasswordHash = PasswordHelper.CreatePasswordHash(password, out string salt),
@@ -66,13 +66,12 @@ namespace UniMate_students_server.Controllers
                         CreatedAt = DateTime.UtcNow
                     };
 
-                    Console.WriteLine(auth);
-                    dbContext.Auths.Add(auth);
+                    dbContext.Auth.Add(auth);
 
                     var authResult = await dbContext.SaveChangesAsync();
                     if(authResult > 0)
                     {
-                        return CreatedAtAction(nameof(GetStudentById), new { id = student.StudentId }, student);
+                        return CreatedAtAction(nameof(GetStudentById), new { studentId = student.StudentId }, student);
                     } else
                     {
                         // If the Auth creation fails, rollback the Student creation
@@ -86,13 +85,13 @@ namespace UniMate_students_server.Controllers
                     return StatusCode(StatusCodes.Status500InternalServerError, "Error creating Student");
                 }
 
-            } catch (DbUpdateException ex)
+            }   catch (DbUpdateException ex)
             {
                 // Log the inner exception details for more information
                 var innerException = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating student: {innerException}");
 
-            } catch (Exception ex) 
+            }   catch (Exception ex) 
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating student: {ex.Message}");
             }

@@ -40,7 +40,7 @@ namespace UniMate_students_server.Controllers
                 return BadRequest("Database context not found.");
             }
             
-            var authRecord = await dbContext.Auths.FirstOrDefaultAsync(a => a.StudentId == request.StudentId);
+            var authRecord = await dbContext.Auth.FirstOrDefaultAsync(a => a.StudentId == request.StudentId);
 
             if (authRecord == null)
             {

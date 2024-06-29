@@ -36,6 +36,5 @@ namespace UniMate_students_server.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedAt { get; set; }
 
-        public ICollection<Auth> Auths { get; set; } = new List<Auth>();
     }
 }
