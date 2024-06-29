@@ -89,6 +89,11 @@ namespace UniMate_students_server.Controllers
                 return Unauthorized("Inavlid credentials, cannot find user");
             }
 
+            if(string.IsNullOrEmpty(authRecord.PasswordHash))
+            {
+                return Ok("Reset password");
+            }
+
             if(!PasswordHelper.VerifyPasswordHash(request.password, authRecord.PasswordHash, authRecord.PasswordSalt))
             {
                 return Unauthorized("Invalid credentials");
