@@ -91,5 +91,23 @@ namespace UniMate_students_server.Controllers
             }
 
         }
+
+        [HttpGet("{studentId}")]
+        public async Task<IActionResult> GetStudentById(int studentId)
+        {
+            var dbContext = GetDynamicDbContext();
+            if(dbContext ==  null)
+            {
+                return BadRequest("Database context not found.");
+            }
+
+            var student = await dbContext.Students.FindAsync(studentId);
+            if(student == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(student);
+        }
     }
 }
