@@ -25,7 +25,43 @@ namespace UniMate_students_server.Controllers
             return _httpContextAccessor.HttpContext.Items["DynamicDbContext"] as UniversityContext;
         }
 
-        // TODO add in a signup endpoint and this can set the password hash
+        // This not working, fix later
+        [HttpPut("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] int StudentId)
+        {
+            var dbContext = GetDynamicDbContext();
+            if(dbContext == null)
+            {
+                return BadRequest("Database context not found.");
+            }
+
+            var authRecord = await dbContext.Auth
+                .FirstOrDefaultAsync(a => a.StudentId == StudentId);
+
+            if(authRecord == null)
+            {
+                return NotFound("Student not found.");
+            }
+
+            authRecord.PasswordHash = "";
+            authRecord.PasswordSalt = "";
+
+            try
+            {
+                await dbContext.SaveChangesAsync();
+                return Ok("Password reset successful.");
+
+            } catch(DbUpdateException ex)
+            {
+                var innerException = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error resetting password: {innerException}");
+
+            } catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error resetting password: {ex.Message}");
+            }
+        }
+
         // TODO this will need to work in unison with frontend where a new user being added has a password hash of their uni name plus username or something and then 
         // if the password hash is empty then return for set new password
 
