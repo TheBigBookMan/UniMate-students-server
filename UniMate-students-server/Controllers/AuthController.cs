@@ -40,14 +40,14 @@ namespace UniMate_students_server.Controllers
                 return BadRequest("Database context not found.");
             }
             
-            var authRecord = await dbContext.Auth.FirstOrDefaultAsync(a => a.StudentId == request.StudentId);
+            var authRecord = await dbContext.Auth.FirstOrDefaultAsync(a => a.StudentId == request.studentId);
 
             if (authRecord == null)
             {
-                return Unauthorized("Inavlid credentials");
+                return Unauthorized("Inavlid credentials, cannot find user");
             }
 
-            if(!PasswordHelper.VerifyPasswordHash(request.Password, authRecord.PasswordHash, authRecord.PasswordSalt))
+            if(!PasswordHelper.VerifyPasswordHash(request.password, authRecord.PasswordHash, authRecord.PasswordSalt))
             {
                 return Unauthorized("Invalid credentials");
             }
@@ -57,8 +57,8 @@ namespace UniMate_students_server.Controllers
 
         public class LoginRequest
         {
-            public int StudentId { get; set; }
-            public string Password { get; set; }
+            public int studentId { get; set; }
+            public string password { get; set; }
         }
     }
 }

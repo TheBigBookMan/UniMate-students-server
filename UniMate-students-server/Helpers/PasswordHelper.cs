@@ -19,7 +19,8 @@ namespace UniMate_students_server.Helpers
 
         public static bool VerifyPasswordHash(string password, string storedHash, string storedSalt)
         {
-            using (var hmac = new HMACSHA512(Encoding.UTF8.GetBytes(storedSalt)))
+            var saltBytes = Convert.FromBase64String(storedSalt);
+            using (var hmac = new HMACSHA512(saltBytes))
             {
                 var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
                 return storedHash == Convert.ToBase64String(computedHash);
@@ -30,6 +31,7 @@ namespace UniMate_students_server.Helpers
         {
             string password = (firstName.Length >= 3 ? firstName.Substring(0, 3) : firstName + GetRandomChars(3 - firstName.Length)) +
                               (lastName.Length >= 3 ? lastName.Substring(0, 3) : lastName + GetRandomChars(3 - lastName.Length));
+            Console.WriteLine(password);
             return password;
         }
 
