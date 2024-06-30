@@ -22,6 +22,32 @@ namespace UniMate_students_server.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddDegree([FromBody])
+        public async Task<IActionResult> AddDegree([FromBody] Degree degree)
+        {
+            var dbContext = GetDynamicDbContext();
+            if(dbContext == null)
+            {
+                return BadRequest("Database context not found.");
+            }
+
+            dbContext.Degrees.Add(degree);
+
+            try
+            {
+                var result = await dbContext.SaveChangesAsync();
+
+                if(result > 0)
+                {
+                    return Ok(degree);
+                } else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error creating degree.");
+                }
+
+            } catch(Exception ex) 
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating degree: {ex.Message}");
+            }
+        }
     }
 }

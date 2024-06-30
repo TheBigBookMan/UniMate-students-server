@@ -18,9 +18,6 @@ namespace UniMate_students_server.Models
         [Column("description")]
         public string Description { get; set; }
 
-        [Column("department")]
-        public string Department { get; set; }
-
         [Column("createdat")]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedAt { get; set; }
