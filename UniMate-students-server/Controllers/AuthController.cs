@@ -77,6 +77,12 @@ namespace UniMate_students_server.Controllers
                 return BadRequest("Database context not found.");
             }
 
+            var universityName = Request.Headers["UniversityName"].ToString();
+            if (string.IsNullOrEmpty(universityName))
+            {
+                return BadRequest("UniversityName header is required.");
+            }
+
             var student = await dbContext.Students.FirstOrDefaultAsync(s => s.Username == request.username);
             if(student == null)
             {
@@ -112,6 +118,7 @@ namespace UniMate_students_server.Controllers
                 UniEmail = student.UniEmail,
                 UniStudentId = student.UniStudentId
             };
+            SetUniversityNameCookie(universityName);
             return Ok(loginSuccessResponse);
         }
 
@@ -119,6 +126,18 @@ namespace UniMate_students_server.Controllers
         {
             public string username { get; set; }
             public string password { get; set; }
+        }
+
+        private void SetUniversityNameCookie(string universityName)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Expires = DateTime.UtcNow.AddDays(30)
+            };
+            Response.Cookies.Append("UniversityName", universityName, cookieOptions);
         }
     }
 }
