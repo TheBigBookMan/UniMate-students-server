@@ -32,6 +32,9 @@ namespace UniMate_students_server.Models
         [Column("dob")]
         public DateTime Dob { get; set; }
 
+        [Column("completeonboard")]
+        public string CompleteOnboard { get; set; }
+
         [Column("createdat")]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedAt { get; set; }

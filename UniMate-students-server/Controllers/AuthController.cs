@@ -88,7 +88,8 @@ namespace UniMate_students_server.Controllers
                 StudentId = student.StudentId,
                 ResponseMessage = "login success",
                 UniEmail = student.UniEmail,
-                UniStudentId = student.UniStudentId
+                UniStudentId = student.UniStudentId,
+                CompleteOnboard = student.CompleteOnboard
             };
             return Ok(loginSuccessResponse);
         }
@@ -141,7 +142,8 @@ namespace UniMate_students_server.Controllers
                 StudentId = student.StudentId,
                 ResponseMessage = "login success",
                 UniEmail = student.UniEmail,
-                UniStudentId = student.UniStudentId
+                UniStudentId = student.UniStudentId,
+                CompleteOnboard = student.CompleteOnboard
             };
 
             SetUniversityNameCookie(universityName, request.username);

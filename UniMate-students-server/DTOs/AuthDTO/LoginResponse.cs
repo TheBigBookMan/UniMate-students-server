@@ -4,5 +4,6 @@
     {
         public string UniEmail { get; set; }
         public string UniStudentId { get; set; }
+        public string CompleteOnboard {  get; set; }
     }
 }
