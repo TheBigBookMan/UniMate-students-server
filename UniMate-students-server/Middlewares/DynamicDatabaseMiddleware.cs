@@ -19,6 +19,11 @@ namespace UniMate_students_server.Middlewares
         {
             var universityName = context.Request.Headers["UniversityName"].ToString();
 
+            if (string.IsNullOrEmpty(universityName))
+            {
+                universityName = context.Request.Cookies["UniversityName"];
+            }
+
             if (!string.IsNullOrEmpty(universityName))
             {
                 using (var scope = context.RequestServices.CreateScope())
