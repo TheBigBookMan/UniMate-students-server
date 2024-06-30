@@ -9,6 +9,7 @@ namespace UniMate_students_server.Contexts
 
         public DbSet<Student> Students { get; set; }
         public DbSet<Auth> Auth { get; set; }
+        public DbSet<Degree> Degrees { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
