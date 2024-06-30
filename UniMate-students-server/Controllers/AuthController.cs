@@ -68,6 +68,31 @@ namespace UniMate_students_server.Controllers
 
         // TODO create a reset password path
 
+        [HttpPost("check-login")]
+        public async Task<IActionResult> CheckLogin([FromBody] CheckLoginRequest request)
+        {
+            var dbContext = GetDynamicDbContext();
+            if (dbContext == null)
+            {
+                return BadRequest("Database context not found.");
+            }
+
+            var student = await dbContext.Students.FirstOrDefaultAsync(s => s.Username == request.username);
+            if (student == null)
+            {
+                return NotFound();
+            }
+
+            var loginSuccessResponse = new LoginResponse
+            {
+                StudentId = student.StudentId,
+                ResponseMessage = "login success",
+                UniEmail = student.UniEmail,
+                UniStudentId = student.UniStudentId
+            };
+            return Ok(loginSuccessResponse);
+        }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
@@ -118,7 +143,8 @@ namespace UniMate_students_server.Controllers
                 UniEmail = student.UniEmail,
                 UniStudentId = student.UniStudentId
             };
-            SetUniversityNameCookie(universityName);
+
+            SetUniversityNameCookie(universityName, request.username);
             return Ok(loginSuccessResponse);
         }
 
@@ -128,16 +154,23 @@ namespace UniMate_students_server.Controllers
             public string password { get; set; }
         }
 
-        private void SetUniversityNameCookie(string universityName)
+        public class CheckLoginRequest
+        {
+            public string username { get; set; }
+            public string universityName { get; set; }
+        }
+
+        private void SetUniversityNameCookie(string universityName, string username)
         {
             var cookieOptions = new CookieOptions
             {
-                HttpOnly = true,
+                // HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.None,
                 Expires = DateTime.UtcNow.AddDays(30)
             };
             Response.Cookies.Append("UniversityName", universityName, cookieOptions);
+            Response.Cookies.Append("StudentUsername", username, cookieOptions);
         }
     }
 }
