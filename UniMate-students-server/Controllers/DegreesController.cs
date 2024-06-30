@@ -21,6 +21,19 @@ namespace UniMate_students_server.Controllers
             return _httpContextAccessor.HttpContext.Items["DynamicDbContext"] as UniversityContext;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetDegrees()
+        {
+            var dbContext = GetDynamicDbContext();
+            if(dbContext == null)
+            {
+                return BadRequest("Database context not found.");
+            }
+
+            var degrees = await dbContext.Degrees.ToListAsync();
+            return Ok(degrees);
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddDegree([FromBody] Degree degree)
         {
