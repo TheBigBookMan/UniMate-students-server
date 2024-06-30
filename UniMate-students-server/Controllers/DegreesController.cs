@@ -62,5 +62,23 @@ namespace UniMate_students_server.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Error creating degree: {ex.Message}");
             }
         }
+
+        [HttpGet("{degreeId}")]
+        public async Task<IActionResult> GetDegreeById(int degreeId)
+        {
+            var dbContext = GetDynamicDbContext();
+            if(dbContext == null)
+            {
+                return BadRequest("Database context not found.");
+            }
+
+            var degree = await dbContext.Degrees.FindAsync(degreeId);
+            if(degree == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(degree);
+        }
     }
 }
