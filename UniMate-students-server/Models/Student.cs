@@ -39,5 +39,8 @@ namespace UniMate_students_server.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime CreatedAt { get; set; }
 
+        [Column("profilepic")]
+        public string ProfilePic { get; set; }
+
     }
 }
