@@ -21,9 +21,9 @@ namespace UniMate_students_server.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
-        private UniversityContext GetDynamicDbContext()
+        private DynamicDbContext GetDynamicDbContext()
         {
-            return _httpContextAccessor.HttpContext.Items["DynamicDbContext"] as UniversityContext;
+            return _httpContextAccessor.HttpContext.Items["DynamicDbContext"] as DynamicDbContext;
         }
 
         // This not working, fix later

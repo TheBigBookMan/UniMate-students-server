@@ -7,12 +7,12 @@ namespace UniMate_students_server.Contexts
     {
         public CentralDbContext(DbContextOptions<CentralDbContext> options) : base(options) { }
 
-        public DbSet<University> Universities { get; set; }
+        public DbSet<Database> Databases { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<University>()
-                .HasKey(u => u.UniversityId);
+            modelBuilder.Entity<Database>()
+                .HasKey(u => u.DatabaseId);
 
             base.OnModelCreating(modelBuilder);
         }

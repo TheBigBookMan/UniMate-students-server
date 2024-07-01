@@ -3,9 +3,9 @@ using UniMate_students_server.Models;
 
 namespace UniMate_students_server.Contexts
 {
-    public class UniversityContext : DbContext
+    public class DynamicDbContext : DbContext
     {
-        public UniversityContext(DbContextOptions<UniversityContext> options) : base(options) { }
+        public DynamicDbContext(DbContextOptions<DynamicDbContext> options) : base(options) { }
 
         public DbSet<Student> Students { get; set; }
         public DbSet<Auth> Auth { get; set; }

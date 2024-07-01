@@ -4,12 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UniMate_students_server.Models
 {
-    public class University
+    public class Database
     {
         [Key]
-        public int UniversityId { get; set;  }
+        public int DatabaseId { get; set;  }
 
-        public string UniversityName { get; set; }
+        public string DatabaseName { get; set; }
 
         public string? DatabaseHash { get; set; }
 

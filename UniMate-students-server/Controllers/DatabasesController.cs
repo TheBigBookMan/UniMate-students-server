@@ -17,27 +17,27 @@ namespace UniMate_students_server.Controllers
             _context = context;
         }
 
-        [HttpGet("universities")]
-        public async Task<IActionResult> GetUniversities()
+        [HttpGet("databases")]
+        public async Task<IActionResult> GetDatabases()
         {
-            var universities = await _context.Universities.ToListAsync();
-            return Ok(universities);
+            var databases = await _context.Databases.ToListAsync();
+            return Ok(databases);
         }
 
-        [HttpPost("universities")]
-        public async Task<IActionResult> AddUniversity([FromBody] University university)
+        [HttpPost("databases")]
+        public async Task<IActionResult> AddDatabase([FromBody] Database database)
         {
-            if (university == null) 
+            if (database == null) 
             {
-                return BadRequest("University is null");
+                return BadRequest("Databases is null");
             }
 
-            university.DatabaseHash = Guid.NewGuid().ToString();
+            database.DatabaseHash = Guid.NewGuid().ToString();
 
-            _context.Universities.Add(university);
+            _context.Databases.Add(database);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetUniversities), new { id = university.UniversityId }, university);
+            return CreatedAtAction(nameof(GetDatabases), new { id = database.DatabaseId }, database);
         }
     }
 }

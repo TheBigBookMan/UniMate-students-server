@@ -16,15 +16,15 @@ namespace UniMate_students_server.Factories
             _configuration = configuration;
         }
 
-        public UniversityContext CreateDbContext(string dbId)
+        public DynamicDbContext CreateDbContext(string dbId)
         {
             var connectionStringTemplate = _configuration.GetConnectionString("UniversityDatabaseTemplate");
             var connectionString = connectionStringTemplate.Replace("{db_id}", dbId);
 
-            var optionsBuilder = new DbContextOptionsBuilder<UniversityContext>();
+            var optionsBuilder = new DbContextOptionsBuilder<DynamicDbContext>();
             optionsBuilder.UseNpgsql(connectionString);
 
-            return new UniversityContext(optionsBuilder.Options);
+            return new DynamicDbContext(optionsBuilder.Options);
         }
     }
 }
