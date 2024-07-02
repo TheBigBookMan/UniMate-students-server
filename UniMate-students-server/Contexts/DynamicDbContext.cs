@@ -11,6 +11,8 @@ namespace UniMate_students_server.Contexts
         public DbSet<Auth> Auth { get; set; }
         public DbSet<Degree> Degrees { get; set; }
 
+        public DbSet<University> University { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Define the relationship between Student and Auth
