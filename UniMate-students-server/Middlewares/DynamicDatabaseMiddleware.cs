@@ -17,14 +17,14 @@ namespace UniMate_students_server.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
-            var universityName = context.Request.Headers["UniversityName"].ToString();
+            var databaseName = context.Request.Headers["UniversityName"].ToString();
 
-            if (string.IsNullOrEmpty(universityName))
+            if (string.IsNullOrEmpty(databaseName))
             {
-                universityName = context.Request.Cookies["UniversityName"];
+                databaseName = context.Request.Cookies["UniversityName"];
             }
 
-            if (!string.IsNullOrEmpty(universityName))
+            if (!string.IsNullOrEmpty(databaseName))
             {
                 using (var scope = context.RequestServices.CreateScope())
                 {
@@ -32,12 +32,12 @@ namespace UniMate_students_server.Middlewares
 
                     var dbContextFactory = scope.ServiceProvider.GetRequiredService<DynamicDbContextFactory>();
 
-                    var university = await centralDbContext.Universities
-                        .FirstOrDefaultAsync(u => u.UniversityName == universityName);
+                    var database = await centralDbContext.Databases
+                        .FirstOrDefaultAsync(u => u.DatabaseName == databaseName);
 
-                    if (university != null)
+                    if (database != null)
                     {
-                        var dbContext = dbContextFactory.CreateDbContext(university.db_id);
+                        var dbContext = dbContextFactory.CreateDbContext(database.db_id);
                         context.Items["DynamicDbContext"] = dbContext;
                     }
                 }

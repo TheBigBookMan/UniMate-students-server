@@ -66,7 +66,7 @@ namespace UniMate_students_server.Controllers
                 return BadRequest("University name not found");
             }
 
-            var university = await dbContext.Universi
+            // var university = await dbContext.Universi
 
             var bucketName = "s3://unimates-profile-pictures/test1/";
         }

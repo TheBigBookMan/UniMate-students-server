@@ -7,6 +7,7 @@ namespace UniMate_students_server.Models
     public class Database
     {
         [Key]
+        [Column("databaseid")]
         public int DatabaseId { get; set;  }
 
         public string DatabaseName { get; set; }
