@@ -10,7 +10,7 @@ namespace UniMate_students_server.Models
         [Column("databaseid")]
         public int DatabaseId { get; set;  }
 
-        public string DatabaseName { get; set; }
+        public string UniversityName { get; set; }
 
         public string? DatabaseHash { get; set; }
 

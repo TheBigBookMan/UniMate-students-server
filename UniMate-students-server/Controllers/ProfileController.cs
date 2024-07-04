@@ -66,14 +66,59 @@ namespace UniMate_students_server.Controllers
                 return BadRequest("University name not found");
             }
 
-            // var university = await dbContext.Universi
+            var university = await dbContext.University.FirstOrDefaultAsync(u => u.UniversityName == universityName);
+            if(university == null)
+            {
+                return NotFound("University not found");
+            }
 
-            var bucketName = "s3://unimates-profile-pictures/test1/";
+            var db_id = university.db_id;
+
+            var bucketName = "unimates-profile-pictures";
+            var key = $"{db_id}/{Guid.NewGuid()}_{file.FileName}";
+
+            try
+            {
+                using (var newMemoryStream = new MemoryStream())
+                {
+                    file.CopyTo(newMemoryStream);
+                    var uploadRequest = new TransferUtilityUploadRequest
+                    {
+                        InputStream = newMemoryStream,
+                        Key = key,
+                        BucketName = bucketName,
+                        ContentType = file.ContentType,
+                        CannedACL = S3CannedACL.PublicRead
+                    };
+
+                    var fileTransferUtility = new TransferUtility(_s3Client);
+                    await fileTransferUtility.UploadAsync(uploadRequest);
+
+                    var fileUrl = $"https://{bucketName}.s3.amazonaws.com/{key}";
+
+                    var student = await dbContext.Students.FindAsync(formData.StudentId);
+                    if(student == null)
+                    {
+                        return NotFound("Student not found.");
+                    }
+
+                    student.ProfilePic = fileUrl;
+                    dbContext.Students.Update(student);
+                    await dbContext.SaveChangesAsync();
+
+                    return Ok(new { Url = fileUrl });
+                }
+
+            } catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
-        private class FileRequest
+        public class FileRequest
         {
             public IFormFile File { get; set; }
             public int StudentId { get; set; }
+        }
     }
 }
