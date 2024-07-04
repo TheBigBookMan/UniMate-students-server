@@ -5,6 +5,7 @@ using UniMate_students_server.Middlewares;
 using Amazon.S3;
 using Amazon.Extensions.NETCore.Setup;
 using Microsoft.Extensions.DependencyInjection;
+using DotNetEnv;
 
 namespace UniMate_students_server
 {
@@ -12,6 +13,8 @@ namespace UniMate_students_server
     {
         public static void Main(string[] args)
         {
+            Env.Load();
+
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
@@ -34,7 +37,8 @@ namespace UniMate_students_server
                     .AllowCredentials());
             });
 
-            builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
+            var awsOptions = builder.Configuration.GetAWSOptions();
+            builder.Services.AddDefaultAWSOptions(awsOptions);
             builder.Services.AddAWSService<IAmazonS3>();
 
             var app = builder.Build();
