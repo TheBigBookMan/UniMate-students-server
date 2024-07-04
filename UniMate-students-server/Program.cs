@@ -2,7 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using UniMate_students_server.Contexts;
 using UniMate_students_server.Factories;
 using UniMate_students_server.Middlewares;
-using Microsoft.AspNetCore.Mvc;
+using Amazon.S3;
+using Amazon.Extensions.NETCore.Setup;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace UniMate_students_server
 {
@@ -31,6 +33,9 @@ namespace UniMate_students_server
                     .AllowAnyMethod()
                     .AllowCredentials());
             });
+
+            builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
+            builder.Services.AddAWSService<IAmazonS3>();
 
             var app = builder.Build();
 
